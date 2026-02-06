@@ -37,11 +37,11 @@ public struct OjireWebView: UIViewRepresentable {
         clientSecret: String,
         publicKey: String,
         token: String,
-        envType: OjireEnvType = .sandbox
+        envType: OjireEnvType = .sandbox,
         onSuccess: (([String: Any]) -> Void)? = nil,
         onPending: (([String: Any]) -> Void)? = nil,
         onFailed: (([String: Any]) -> Void)? = nil,
-        onClose: (() -> Void)? = nil,
+        onClose: (() -> Void)? = nil
     ) {
         self.id = id
         self.clientSecret = clientSecret
@@ -79,8 +79,9 @@ public struct OjireWebView: UIViewRepresentable {
         let webView = WKWebView(frame: .zero, configuration: config)
         webView.navigationDelegate = context.coordinator
         webView.uiDelegate = context.coordinator
-
-        let url = URL(string: "\(envType.baseURL)/pay/\(id)")!
+        
+        let baseURL = (envType ?? .sandbox).baseURL
+        let url = URL(string: "\(baseURL)/pay/\(id)")!
         webView.load(URLRequest(url: url))
 
         context.coordinator.webView = webView
