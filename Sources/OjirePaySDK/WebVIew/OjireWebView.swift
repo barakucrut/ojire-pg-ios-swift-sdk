@@ -37,21 +37,21 @@ public struct OjireWebView: UIViewRepresentable {
         clientSecret: String,
         publicKey: String,
         token: String,
+        envType: OjireEnvType = .sandbox
         onSuccess: (([String: Any]) -> Void)? = nil,
         onPending: (([String: Any]) -> Void)? = nil,
         onFailed: (([String: Any]) -> Void)? = nil,
         onClose: (() -> Void)? = nil,
-        envType: OjireEnvType = .sandbox
     ) {
         self.id = id
         self.clientSecret = clientSecret
         self.publicKey = publicKey
         self.token = token
+        self.envType = envType
         self.onSuccess = onSuccess
         self.onPending = onPending
         self.onFailed = onFailed
         self.onClose = onClose
-        self.envType = envType
     }
 
     // MARK: - UIViewRepresentable
