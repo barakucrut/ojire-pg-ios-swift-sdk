@@ -1,6 +1,22 @@
 import SwiftUI
 @preconcurrency import WebKit
 
+public enum OjireEnvType {
+    case dev
+    case sandbox
+    case prod
+    var baseURL: String {
+        switch self {
+        case .prod:
+            return "https://pay.ojire.com"
+        case .dev:
+            return "https://pay-dev.ojire.com"
+        case .sandbox:
+            return "https://pay-sandbox.ojire.com"
+        }
+    }
+}
+
 public struct OjireWebView: UIViewRepresentable {
 
     // MARK: - Public Params
@@ -8,6 +24,7 @@ public struct OjireWebView: UIViewRepresentable {
     public let clientSecret: String
     public let publicKey: String
     public let token: String
+    public let envType: OjireEnvType?
 
     public var onSuccess: (([String: Any]) -> Void)?
     public var onPending: (([String: Any]) -> Void)?
@@ -23,7 +40,8 @@ public struct OjireWebView: UIViewRepresentable {
         onSuccess: (([String: Any]) -> Void)? = nil,
         onPending: (([String: Any]) -> Void)? = nil,
         onFailed: (([String: Any]) -> Void)? = nil,
-        onClose: (() -> Void)? = nil
+        onClose: (() -> Void)? = nil,
+        envType: OjireEnvType = .sandbox
     ) {
         self.id = id
         self.clientSecret = clientSecret
@@ -33,6 +51,7 @@ public struct OjireWebView: UIViewRepresentable {
         self.onPending = onPending
         self.onFailed = onFailed
         self.onClose = onClose
+        self.envType = envType
     }
 
     // MARK: - UIViewRepresentable
@@ -61,7 +80,7 @@ public struct OjireWebView: UIViewRepresentable {
         webView.navigationDelegate = context.coordinator
         webView.uiDelegate = context.coordinator
 
-        let url = URL(string: "https://pay-dev.ojire.com/pay/\(id)")!
+        let url = URL(string: "\(envType.baseURL)/pay/\(id)")!
         webView.load(URLRequest(url: url))
 
         context.coordinator.webView = webView
