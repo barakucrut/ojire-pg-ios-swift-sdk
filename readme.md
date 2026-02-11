@@ -30,7 +30,7 @@ struct ContentView: View {
 
     var body: some View {
         OjireWebView(
-            id: intent.id,
+            paymentId: intent.paymentId,
             clientSecret: intent.clientSecret,
             publicKey: "pk_xxx",
             token: intent.customerToken,
