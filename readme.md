@@ -1,7 +1,10 @@
-# Ojire Payment Gateway iOS SDK
+How to install SDK
 
-SDK resmi Ojire Payment Gateway untuk iOS (SwiftUI) berbasis WKWebView.
-Menggunakan **URL Journey** (success / pending / failed / close) sama seperti SDK React Native.
+## IOS Swift
+
+> ⚠️ **Caution**
+>
+> You must get `customer_token`, `payment_secret` and `payment_id` first at your backend to OJIRE API via request to `/v1/payment-intents` endpoint
 
 ---
 
@@ -41,8 +44,8 @@ struct ContentView: View {
                 print("⏳ PENDING:", data)
             },
 
-            onFailed: { data in
-                print("❌ FAILED:", data)
+            onError: { data in
+                print("❌ Error:", data)
             },
 
             onClose: {
@@ -60,7 +63,7 @@ struct ContentView: View {
 
 | Name | Type | Required | Description |
 |-----|-----|---------|-------------|
-| `id` | `String` | ✅ | Payment Intent ID |
+| `paymentId` | `String` | ✅ | Payment Intent ID |
 | `clientSecret` | `String` | ✅ | Client secret dari backend |
 | `publicKey` | `String` | ✅ | Public key merchant |
 | `token` | `String` | ✅ | Customer token |
@@ -86,35 +89,9 @@ public enum OjireEnvType {
 |--------|-------|------------|
 | `onSuccess` | `[String: Any]` | Payment sukses |
 | `onPending` | `[String: Any]` | Payment pending |
-| `onFailed` | `[String: Any]` | Payment gagal |
+| `onError` | `[String: Any]` | Payment gagal |
 | `onClose` | `Void` | User menutup halaman pembayaran |
 
 ---
 
-## Callback Data Example
 
-```swift
-[
-  "status": "success",
-  "transaction_id": "trx_123",
-  "order_id": "order_456"
-]
-```
-
-> Struktur data mengikuti query parameter dari URL redirect.
-
----
-
-## Notes
-
-- SDK otomatis disable cache (`WKWebsiteDataStore.nonPersistent`)
-- JavaScript enabled secara default
-- Alert JavaScript (`alert()`) akan tampil native di iOS
-- Flow **INIT / READY handshake** otomatis
-
----
-
-## License
-
-MIT License  
-© Ojire Payment Gateway
